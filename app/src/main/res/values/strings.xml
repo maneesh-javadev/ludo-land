@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ludo Land</string>
+    <string name="start_game">START GAME 🎲</string>
+    <string name="play_game">PLAY GAME 🚀</string>
+    <string name="play_vs_ai">PLAY VS AI 🤖</string>
+    <string name="play_with_friends">PLAY WITH FRIENDS 👥</string>
+    <string name="resume_game">RESUME GAME ⏯️</string>
+    <string name="settings">SETTINGS ⚙️</string>
+    <string name="player_setup">PLAYER SETUP 🎮</string>
+    <string name="number_of_players">NUMBER OF PLAYERS</string>
+    <string name="ai_difficulty">AI DIFFICULTY</string>
+    <string name="back">BACK 🏠</string>
+    <string name="roll_dice">🎲 ROLL</string>
+    <string name="play_again">PLAY AGAIN 🔄</string>
+    <string name="undo">↩️ UNDO</string>
+    <string name="restart">RESTART 🔄</string>
+    <string name="main_menu">MAIN MENU 🏠</string>
+    <string name="quit_game_title">QUIT GAME?</string>
+    <string name="quit_game_desc">Your progress will be saved automatically.</string>
+    <string name="color_blind_mode">Color-Blind Mode 👁️</string>
+    <string name="sound_effects">Sound Effects 🔊</string>
+    <string name="haptic_vibration">Haptic Vibration 📳</string>
+    <string name="your_default_name">Your Default Name</string>
+    <string name="no_moves_available">No moves available!</string>
+    <string name="winners_podium">🏆 WINNERS PODIUM 🏆</string>
+</resources>
