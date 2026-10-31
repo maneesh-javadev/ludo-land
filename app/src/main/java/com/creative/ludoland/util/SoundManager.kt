@@ -1,10 +1,31 @@
 package com.creative.ludoland.util
 
 import android.content.Context
+import android.media.AudioAttributes
 import android.media.AudioManager
+import android.media.SoundPool
 import android.media.ToneGenerator
+import com.creative.ludoland.R
 
 class SoundManager(private val context: Context) {
+
+    private val soundPool: SoundPool = SoundPool.Builder()
+        .setMaxStreams(5)
+        .setAudioAttributes(
+            AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build()
+        )
+        .build()
+
+    private var diceRollSoundId: Int = 0
+
+    init {
+        try {
+            diceRollSoundId = soundPool.load(context, R.raw.dice_roll, 1)
+        } catch (_: Exception) {}
+    }
 
     private var toneGenerator: ToneGenerator? = createToneGenerator()
 
@@ -41,7 +62,11 @@ class SoundManager(private val context: Context) {
     fun playDiceRollSound() {
         if (isMuted) return
         try {
-            getOrResetToneGenerator()?.startTone(ToneGenerator.TONE_PROP_BEEP2, 120)
+            if (diceRollSoundId != 0) {
+                soundPool.play(diceRollSoundId, 1.0f, 1.0f, 1, 0, 1.0f)
+            } else {
+                getOrResetToneGenerator()?.startTone(ToneGenerator.TONE_PROP_BEEP2, 120)
+            }
         } catch (_: Exception) {
             toneGenerator = null
         }
@@ -75,6 +100,10 @@ class SoundManager(private val context: Context) {
     }
 
     fun release() {
+        try {
+            soundPool.release()
+        } catch (_: Exception) {}
+
         try {
             toneGenerator?.release()
         } catch (_: Exception) {}
