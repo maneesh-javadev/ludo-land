@@ -3,55 +3,81 @@ package com.creative.ludoland.util
 import android.content.Context
 import android.media.AudioManager
 import android.media.ToneGenerator
-import android.os.Build
 
-class SoundManager(context: Context) {
+class SoundManager(private val context: Context) {
 
-    private var toneGenerator: ToneGenerator? = try {
-        ToneGenerator(AudioManager.STREAM_MUSIC, 80)
-    } catch (e: Exception) {
-        null
-    }
+    private var toneGenerator: ToneGenerator? = createToneGenerator()
 
     var isMuted: Boolean = false
+
+    private fun createToneGenerator(): ToneGenerator? {
+        return try {
+            ToneGenerator(AudioManager.STREAM_MUSIC, 100)
+        } catch (_: Exception) {
+            try {
+                ToneGenerator(AudioManager.STREAM_SYSTEM, 100)
+            } catch (_: Exception) {
+                null
+            }
+        }
+    }
+
+    private fun getOrResetToneGenerator(): ToneGenerator? {
+        if (toneGenerator == null) {
+            toneGenerator = createToneGenerator()
+        }
+        return toneGenerator
+    }
 
     fun playTapSound() {
         if (isMuted) return
         try {
-            toneGenerator?.startTone(ToneGenerator.TONE_PROP_BEEP, 50)
-        } catch (_: Exception) {}
+            getOrResetToneGenerator()?.startTone(ToneGenerator.TONE_PROP_BEEP, 60)
+        } catch (_: Exception) {
+            toneGenerator = null
+        }
     }
 
     fun playDiceRollSound() {
         if (isMuted) return
         try {
-            toneGenerator?.startTone(ToneGenerator.TONE_DTMF_0, 100)
-        } catch (_: Exception) {}
+            getOrResetToneGenerator()?.startTone(ToneGenerator.TONE_PROP_BEEP2, 120)
+        } catch (_: Exception) {
+            toneGenerator = null
+        }
     }
 
     fun playMoveSound() {
         if (isMuted) return
         try {
-            toneGenerator?.startTone(ToneGenerator.TONE_PROP_ACK, 70)
-        } catch (_: Exception) {}
+            getOrResetToneGenerator()?.startTone(ToneGenerator.TONE_PROP_ACK, 80)
+        } catch (_: Exception) {
+            toneGenerator = null
+        }
     }
 
     fun playCaptureSound() {
         if (isMuted) return
         try {
-            toneGenerator?.startTone(ToneGenerator.TONE_CDMA_HIGH_L, 180)
-        } catch (_: Exception) {}
+            getOrResetToneGenerator()?.startTone(ToneGenerator.TONE_CDMA_HIGH_L, 180)
+        } catch (_: Exception) {
+            toneGenerator = null
+        }
     }
 
     fun playWinSound() {
         if (isMuted) return
         try {
-            toneGenerator?.startTone(ToneGenerator.TONE_SUP_RINGTONE, 350)
-        } catch (_: Exception) {}
+            getOrResetToneGenerator()?.startTone(ToneGenerator.TONE_SUP_PIP, 350)
+        } catch (_: Exception) {
+            toneGenerator = null
+        }
     }
 
     fun release() {
-        toneGenerator?.release()
+        try {
+            toneGenerator?.release()
+        } catch (_: Exception) {}
         toneGenerator = null
     }
 }

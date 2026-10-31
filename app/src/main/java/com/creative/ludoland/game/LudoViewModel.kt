@@ -121,8 +121,10 @@ class LudoViewModel(application: Application) : AndroidViewModel(application) {
         if (state.phase != GamePhase.WAITING_ROLL || _uiState.value.isDiceRolling) return
 
         viewModelScope.launch {
-            soundManager.playDiceRollSound()
-            hapticManager.vibrateDiceRoll(_uiState.value.vibrationEnabled)
+            try {
+                soundManager.playDiceRollSound()
+                hapticManager.vibrateDiceRoll(_uiState.value.vibrationEnabled)
+            } catch (_: Exception) {}
 
             _uiState.update { it.copy(isDiceRolling = true) }
             delay(500)
@@ -172,14 +174,18 @@ class LudoViewModel(application: Application) : AndroidViewModel(application) {
         if (state.phase != GamePhase.WAITING_MOVE) return
 
         viewModelScope.launch {
-            soundManager.playMoveSound()
+            try {
+                soundManager.playMoveSound()
+            } catch (_: Exception) {}
 
             val nextState = GameEngine.applyMove(state, token)
             _uiState.update { it.copy(gameState = nextState) }
             saveCurrentGame(nextState)
 
             if (nextState.phase == GamePhase.GAME_OVER) {
-                soundManager.playWinSound()
+                try {
+                    soundManager.playWinSound()
+                } catch (_: Exception) {}
                 gameSaveRepo.clearSavedGame()
                 return@launch
             }
